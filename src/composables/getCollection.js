@@ -1,4 +1,4 @@
-import { ref, watchEffect } from '@vue/reactivity'
+import { ref, watchEffect } from 'vue'
 import { projectFirestore } from '@/firebase/config'
 
 const getCollection = (collection) => {

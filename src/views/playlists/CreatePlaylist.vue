@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="submitHandle">
+    <form @submit.prevent="handleSubmit">
         <h4>Create New Playlist </h4>
         <input type="text" placeholder="Playlist title" required v-model="title">
         <textarea placeholder="Playlist description" required v-model="description"></textarea>
@@ -7,29 +7,59 @@
         <input type="file" @change="handleChange">
         <div class="error">{{ fileError }}</div>
         <div class="error"></div>
-        <button>Create</button>
+        <button v-if="!isPending">Create</button>
+        <button v-else disabled>Saving</button>
     </form>
 </template>
 
 <script>
 import { ref } from '@vue/reactivity'
 import useStorage from '@/composables/useStorage'
+import useCollection from '@/composables/useCollection'
+import getUser from '@/composables/getUser'
+import { timestamp } from '@/firebase/config'
 
 export default {
     setup() {
         const { url, filePath, uploadImage } = useStorage()
+        const { error, addDoc } = useCollection('playlists')
+        const { user } = getUser()
 
         const title = ref('')
         const description = ref('')
         const file = ref(null)
         const fileError = ref(null)
+        const isPending = ref(false)
+
+        const handleSubmit = async () => {
+            if (file.value) {
+                // Is pending needs to start here
+                isPending.value = true
+                await uploadImage(file.value)
+                await addDoc({
+                  title: title.value,
+                  description: description.value,
+                  userId: user.value.uid,
+                  userName: user.value.displayName,
+                  coverUrl: url.value,
+                  filePath: filePath.value,
+                  episodes: [],
+                  createdAt: timestamp()
+                })
+                // Is pending needs to end here
+                isPending.value = false
+                if (!error.value) {
+                  console.log('playlist added')
+                }
+            }
+        }
 
         // Allowed file types
         const types = ['image/png', 'image/jpeg']
         
         const handleChange = (event) => {
             // Choosing a file
-            const selected = event.target.files[0]
+            let selected = event.target.files[0]
             // Determine if image was selected or not
             if (selected && types.includes(selected.type)) {
                 file.value = selected
@@ -39,15 +69,8 @@ export default {
                 fileError.value = 'Please select a proper image file (png or jpg)'
             }
         }
-        
-        const submitHandle = async () => {
-            if (file.value) {
-                await uploadImage(file.value)
-                console.log('image uploaded, url: ', url.value )
-            }
-        }
 
-        return { title, description, handleChange, fileError, submitHandle }
+        return { title, description, handleChange, fileError, handleSubmit, isPending }
 
     }
 }

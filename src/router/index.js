@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import Signup from '../views/auth/Signup.vue'
 import Login from '../views/auth/Login.vue'
 import CreatePlaylist from '../views/playlists/CreatePlaylist.vue'
+import PlaylistDetails from '../views/playlists/PlaylistDetails.vue'
 
 // Route gaurds
 import { projectAuth } from '@/firebase/config';
@@ -39,7 +40,13 @@ const routes = [
     component: CreatePlaylist,
     beforeEnter: requireAuth
   },
-    
+  {
+    path: '/playlists/:id',
+    name: 'PlaylistDetails',
+    component: PlaylistDetails,
+    props: true,
+    beforeEnter: requireAuth,
+  }  
   //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
 ]
 

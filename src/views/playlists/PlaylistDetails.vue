@@ -16,12 +16,14 @@
         <!-- Song list -->
         <div class="song-list">
             <p>Song list here</p>
+            <AddPodcast v-if="ownership" :playlist="playlist" />
         </div>
 
     </div>
 </template>
 
 <script>
+import AddPodcast from '@/components/AddPodcast.vue'
 import getDocument from '@/composables/getDocument'
 import useDocument from '@/composables/useDocument'
 import useStorage from '@/composables/useStorage'
@@ -31,6 +33,7 @@ import { useRouter } from 'vue-router'
 
 export default {
     props: ['id'],
+    components: { AddPodcast },
     setup(props) {
         const { error, document: playlist } = getDocument('playlists', props.id)
         const { user } = getUser()

@@ -15,7 +15,7 @@
 
         <!-- Song list -->
         <div class="song-list">
-            <p>Song list here</p>
+            <p>Episode list here</p>
             <AddPodcast v-if="ownership" :playlist="playlist" />
         </div>
 

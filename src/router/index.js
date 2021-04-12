@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Signup from '../views/auth/Signup.vue'
 import Login from '../views/auth/Login.vue'
+import UserPlaylists from '../views/playlists/UserPlaylists.vue'
 import CreatePlaylist from '../views/playlists/CreatePlaylist.vue'
 import PlaylistDetails from '../views/playlists/PlaylistDetails.vue'
 
@@ -45,6 +46,12 @@ const routes = [
     name: 'PlaylistDetails',
     component: PlaylistDetails,
     props: true,
+    beforeEnter: requireAuth,
+  },
+  {
+    path: '/playlists/user',
+    name: 'UserPlaylists',
+    component: UserPlaylists,
     beforeEnter: requireAuth,
   }  
   //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')

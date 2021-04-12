@@ -10,7 +10,7 @@
           <p>created by {{ playlist.userName }}</p>
         </div>
         <div class="episode-number">
-          <p>{{ playlist.episodes.length }} songs</p>
+          <p>{{ playlist.episodes.length }}</p>
         </div>
       </div>
     </router-link>

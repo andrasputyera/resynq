@@ -14,8 +14,15 @@
         </div>
 
         <!-- Song list -->
-        <div class="song-list">
-            <p>Episode list here</p>
+        <div class="episode-list">
+            <div v-if="!playlist.episodes.length">No episodes have been added to this playlist yet.</div>
+            <div v-for="episode in playlist.episodes" :key="episode.id" class="single-episode">
+              <div class="details">
+                <h3>{{ episode.title }}</h3>
+                <p>{{ episode.artist }}</p>
+              </div>
+              <button v-if="ownership">Delete</button>
+            </div>
             <AddPodcast v-if="ownership" :playlist="playlist" />
         </div>
 
@@ -94,5 +101,13 @@ export default {
   }
   .description {
     text-align: left;
+  }
+  .single-episode {
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed var(--secondary);
+    margin-bottom: 20px;
   }
 </style>

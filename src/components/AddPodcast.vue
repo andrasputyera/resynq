@@ -1,5 +1,5 @@
 <template>
-    <div class="add-podcast">
+    <div class="add-episode">
         <button v-if="!showForm" @click="showForm = true">Add Episode</button>
         <form v-if="showForm" @submit.prevent="handleSubmit">
             <h4>Add a new podcast</h4>
@@ -41,7 +41,7 @@ export default {
 </script>
 
 <style scoped>
-  .add-song {
+  .add-episode {
     text-align: center;
     margin-top: 40px;
   }
